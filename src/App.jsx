@@ -14,6 +14,16 @@ const App = () => {
 
   const toast = useToast();
 
+  useEffect(() => {
+    const localTweets = JSON.parse(localStorage.getItem("tweets"));
+    localTweets && setTweets(localTweets);
+  }, []);
+
+  useEffect(() => {
+    tweets.length !== 0 &&
+      localStorage.setItem("tweets", JSON.stringify(tweets));
+  }, [tweets]);
+
   const displayToast = () => {
     return toast({
       position: "top",
