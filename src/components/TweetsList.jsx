@@ -4,6 +4,8 @@ const TweetsList = () => {
   return (
     <>
       <Tweet />
+      <Tweet />
+      <Tweet />
     </>
   );
 };
