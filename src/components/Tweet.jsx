@@ -1,14 +1,16 @@
 import styles from "./TweetStyles";
+import format from "date-fns/format";
 import { Box } from "@chakra-ui/react";
 
-const Tweet = () => {
+const Tweet = ({ date, content }) => {
+  const formattedDate = format(new Date(date), "dd MMM yyyy HH:mm");
   return (
     <Box {...styles.Box}>
       <div {...styles.div}>
         <span>Name</span>
-        <span>Date</span>
+        <span>{formattedDate}</span>
       </div>
-      <p {...styles.p}>Some content</p>
+      <p {...styles.p}>{content}</p>
     </Box>
   );
 };

@@ -1,6 +1,6 @@
 const styles = {
   Box: {
-    minW: {
+    width: {
       base: "100%",
       sm: "100%",
       md: "500px",
@@ -10,6 +10,7 @@ const styles = {
       padding: "15px 25px",
       borderRadius: 5,
       margin: "10px 0px 10px 0px",
+      wordBreak: "break-word",
     },
   },
   div: {

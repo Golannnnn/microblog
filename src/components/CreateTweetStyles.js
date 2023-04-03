@@ -17,7 +17,7 @@ const styles = {
     placeholder: "What do you have in mind...",
     resize: "none",
     sx: {
-      height: 200,
+      height: 160,
       color: "white",
     },
   },

@@ -1,13 +1,11 @@
 import Tweet from "./Tweet";
 
-const TweetsList = () => {
-  return (
-    <>
-      <Tweet />
-      <Tweet />
-      <Tweet />
-    </>
-  );
+const TweetsList = ({ tweets }) => {
+  const results = tweets.map((tweet) => (
+    <Tweet key={tweet.id} date={tweet.date} content={tweet.content} />
+  ));
+
+  return <>{results}</>;
 };
 
 export default TweetsList;
