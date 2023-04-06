@@ -1,38 +1,18 @@
-import { useState, useEffect } from "react";
-import { nanoid } from "nanoid";
+import { useState } from "react";
+import { useGetAllTweets, usePostTweet } from "./lib/react-query";
 import ChakraContainer from "./components/ChakraContainer";
 import CreateTweet from "./components/CreateTweet";
 import TweetList from "./components/TweetsList";
-import { useToast } from "@chakra-ui/react";
 
 const App = () => {
-  const [tweets, setTweets] = useState([]);
   const [input, setInput] = useState({
     string: "",
     error: false,
   });
 
-  const toast = useToast();
-
-  useEffect(() => {
-    const localTweets = JSON.parse(localStorage.getItem("tweets"));
-    localTweets && setTweets(localTweets);
-  }, []);
-
-  useEffect(() => {
-    tweets.length !== 0 &&
-      localStorage.setItem("tweets", JSON.stringify(tweets));
-  }, [tweets]);
-
-  const displayToast = () => {
-    return toast({
-      position: "top",
-      description: "Tweet posted.",
-      status: "success",
-      duration: 1500,
-      isClosable: true,
-    });
-  };
+  const { tweets, isLoading, isError, error } = useGetAllTweets();
+  const { isCreating, isCreated, isCreateError, createError, createTweet } =
+    usePostTweet();
 
   const handleInputChange = (e) => {
     setInput({
@@ -45,28 +25,28 @@ const App = () => {
 
   const addTweet = () => {
     const newTweet = {
-      id: nanoid(),
       date: new Date(),
+      userName: "User",
       content: input.string,
     };
-    setTweets([newTweet, ...tweets]);
-    resetInput();
+    createTweet(newTweet);
   };
 
   const handleTweetSubmit = () => {
     if (!input.string || input.error) return;
     addTweet();
-    displayToast();
+    resetInput();
   };
 
   return (
     <ChakraContainer>
       <CreateTweet
+        loading={isLoading}
         input={input}
         handleTweetSubmit={handleTweetSubmit}
         handleInputChange={handleInputChange}
       />
-      <TweetList tweets={tweets} />
+      {!isLoading && !isError && <TweetList tweets={tweets} />}
     </ChakraContainer>
   );
 };
