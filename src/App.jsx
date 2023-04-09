@@ -1,12 +1,17 @@
 import { useState } from "react";
 import { useGetAllTweets, usePostTweet } from "./lib/react-query";
 import ChakraContainer from "./components/ChakraContainer";
-import CreateTweet from "./components/CreateTweet";
-import TweetList from "./components/TweetsList";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import Home from "./components/Home";
+import Profile from "./components/Profile";
+import { useToast } from "@chakra-ui/react";
 
 const App = () => {
+  const [userName, setUserName] = useState("");
   const [input, setInput] = useState({
-    string: "",
+    userName: "",
+    content: "",
     error: false,
   });
 
@@ -14,39 +19,100 @@ const App = () => {
   const { isCreating, isCreated, isCreateError, createError, createTweet } =
     usePostTweet();
 
-  const handleInputChange = (e) => {
-    setInput({
-      string: e.target.value,
-      error: e.target.value.length > 140,
+  const toast = useToast();
+
+  const displayToast = () => {
+    return toast({
+      position: "top",
+      description: "Changed username successfully!",
+      status: "success",
+      duration: 1500,
+      isClosable: true,
     });
   };
 
-  const resetInput = () => setInput({ string: "", error: false });
+  const handleUserNameChange = (e) => {
+    setUserName(e.target.value);
+  };
+
+  const handleUserNameSubmit = (e) => {
+    e.preventDefault();
+    setInput((prev) => {
+      return {
+        ...prev,
+        userName: e.target[0].value,
+      };
+    });
+    displayToast();
+  };
+
+  const handleInputChange = (e) => {
+    setInput((prev) => {
+      return {
+        ...prev,
+        [e.target.name]: e.target.value,
+        error: e.target.name === "content" && e.target.value.length > 280,
+      };
+    });
+  };
+
+  const resetInput = () => {
+    setInput((prev) => {
+      return {
+        ...prev,
+        content: "",
+        error: false,
+      };
+    });
+  };
 
   const addTweet = () => {
     const newTweet = {
       date: new Date(),
-      userName: "User",
-      content: input.string,
+      userName: input.userName ? input.userName : "Anonymous",
+      content: input.content,
     };
     createTweet(newTweet);
   };
 
   const handleTweetSubmit = () => {
-    if (!input.string || input.error) return;
+    if (!input.content || input.error) return;
     addTweet();
     resetInput();
   };
 
   return (
     <ChakraContainer>
-      <CreateTweet
-        loading={isLoading}
-        input={input}
-        handleTweetSubmit={handleTweetSubmit}
-        handleInputChange={handleInputChange}
-      />
-      {!isLoading && !isError && <TweetList tweets={tweets} />}
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Navbar />}>
+            <Route
+              index
+              element={
+                <Home
+                  loading={isLoading}
+                  isError={isError}
+                  input={input}
+                  handleTweetSubmit={handleTweetSubmit}
+                  handleInputChange={handleInputChange}
+                  tweets={tweets}
+                />
+              }
+            />
+            <Route
+              path="profile"
+              element={
+                <Profile
+                  userName={userName}
+                  handleUserNameChange={handleUserNameChange}
+                  handleUserNameSubmit={handleUserNameSubmit}
+                  input={input}
+                />
+              }
+            />
+          </Route>
+        </Routes>
+      </BrowserRouter>
     </ChakraContainer>
   );
 };

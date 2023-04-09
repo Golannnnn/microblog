@@ -18,13 +18,13 @@ const CreateTweet = ({
         <InputGroup {...styles.inputGroup}>
           <Textarea
             {...styles.textArea}
-            value={input.string}
+            value={input.content}
             onChange={handleInputChange}
           />
         </InputGroup>
         <Button
           {...styles.button}
-          isDisabled={!input.string || input.error || loading}
+          isDisabled={!input.content || input.error || loading}
           onClick={handleTweetSubmit}
         >
           Tweet

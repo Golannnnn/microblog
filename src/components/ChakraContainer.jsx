@@ -15,7 +15,14 @@ const theme = extendTheme({ breakpoints });
 const ChakraContainer = ({ children }) => {
   return (
     <ChakraProvider theme={theme}>
-      <Center sx={{ display: "flex", flexDirection: "column" }}>
+      <Center
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          marginLeft: 5,
+          marginRight: 5,
+        }}
+      >
         {children}
       </Center>
     </ChakraProvider>

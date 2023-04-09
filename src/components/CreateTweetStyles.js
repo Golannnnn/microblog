@@ -13,6 +13,7 @@ const styles = {
     },
   },
   textArea: {
+    name: "content",
     pr: "1rem",
     placeholder: "What do you have in mind...",
     resize: "none",
