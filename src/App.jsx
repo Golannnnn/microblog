@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { useGetAllTweets, usePostTweet } from "./lib/react-query";
 import ChakraContainer from "./components/ChakraContainer";
+import { useGetAllTweets, usePostTweet } from "./lib/react-query";
+import Context from "./lib/Context";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
@@ -89,14 +90,18 @@ const App = () => {
             <Route
               index
               element={
-                <Home
-                  loading={isLoading}
-                  isError={isError}
-                  input={input}
-                  handleTweetSubmit={handleTweetSubmit}
-                  handleInputChange={handleInputChange}
-                  tweets={tweets}
-                />
+                <Context.Provider
+                  value={{
+                    isLoading,
+                    isError,
+                    input,
+                    handleTweetSubmit,
+                    handleInputChange,
+                    tweets,
+                  }}
+                >
+                  <Home />
+                </Context.Provider>
               }
             />
             <Route

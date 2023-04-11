@@ -5,13 +5,12 @@ import { Textarea } from "@chakra-ui/react";
 import { Button } from "@chakra-ui/react";
 import { Badge } from "@chakra-ui/react";
 import { Spinner } from "@chakra-ui/react";
+import Context from "../lib/Context";
+import { useContext } from "react";
 
-const CreateTweet = ({
-  input,
-  handleTweetSubmit,
-  handleInputChange,
-  loading,
-}) => {
+const CreateTweet = () => {
+  const { input, handleTweetSubmit, handleInputChange, isLoading } =
+    useContext(Context);
   return (
     <>
       <FormControl {...styles.formControl}>
@@ -24,7 +23,7 @@ const CreateTweet = ({
         </InputGroup>
         <Button
           {...styles.button}
-          isDisabled={!input.content || input.error || loading}
+          isDisabled={!input.content || input.error || isLoading}
           onClick={handleTweetSubmit}
         >
           Tweet
@@ -33,7 +32,7 @@ const CreateTweet = ({
           The tweet can't contain more than 140 chars.
         </Badge>
       </FormControl>
-      {loading && (
+      {isLoading && (
         <Spinner
           margin={4}
           thickness="5px"

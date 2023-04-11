@@ -1,6 +1,9 @@
 import Tweet from "./Tweet";
+import Context from "../lib/Context";
+import { useContext } from "react";
 
-const TweetsList = ({ tweets }) => {
+const TweetsList = () => {
+  const { tweets } = useContext(Context);
   const results = tweets.map((tweet) => (
     <Tweet
       key={tweet.id}

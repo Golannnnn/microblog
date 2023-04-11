@@ -1,23 +1,14 @@
 import CreateTweet from "./CreateTweet";
 import TweetsList from "./TweetsList";
+import Context from "../lib/Context";
+import { useContext } from "react";
 
-const Home = ({
-  loading,
-  isError,
-  input,
-  handleTweetSubmit,
-  handleInputChange,
-  tweets,
-}) => {
+const Home = () => {
+  const { isLoading, isError } = useContext(Context);
   return (
     <>
-      <CreateTweet
-        loading={loading}
-        input={input}
-        handleTweetSubmit={handleTweetSubmit}
-        handleInputChange={handleInputChange}
-      />
-      {!loading && !isError && <TweetsList tweets={tweets} />}
+      <CreateTweet />
+      {!isLoading && !isError && <TweetsList />}
     </>
   );
 };
