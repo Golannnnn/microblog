@@ -52,7 +52,7 @@ const App = () => {
       return {
         ...prev,
         [e.target.name]: e.target.value,
-        error: e.target.name === "content" && e.target.value.length > 280,
+        error: e.target.name === "content" && e.target.value.length > 140,
       };
     });
   };
