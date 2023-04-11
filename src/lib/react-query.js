@@ -12,6 +12,7 @@ export const useGetAllTweets = () => {
     queryKey: ["tweets"],
     queryFn: () => getAllTweets(),
     select: (data) => data.tweets,
+    refetchInterval: 5000,
   });
 
   return { tweets, isLoading, isError, error };
@@ -39,8 +40,12 @@ export const usePostTweet = () => {
     mutate: createTweet,
   } = useMutation({
     mutationFn: (tweet) => postTweet(tweet),
-    onSuccess: () => {
-      queryClient.invalidateQueries(["tweets"]);
+    onSuccess: (newTweet) => {
+      queryClient.setQueryData(["tweets"], (prev) => {
+        return {
+          tweets: [newTweet, ...prev.tweets],
+        };
+      });
       displayToast("success");
     },
     onError: (error) => {
