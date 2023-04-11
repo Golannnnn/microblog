@@ -12,7 +12,7 @@ export const useGetAllTweets = () => {
     queryKey: ["tweets"],
     queryFn: () => getAllTweets(),
     select: (data) => data.tweets,
-    refetchInterval: 5000,
+    refetchInterval: 6000,
   });
 
   return { tweets, isLoading, isError, error };
