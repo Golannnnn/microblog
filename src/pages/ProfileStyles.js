@@ -6,6 +6,14 @@ const styles = {
       marginBottom: 3,
     },
   },
+  logIn: {
+    style: {
+      textAlign: "center",
+      color: "white",
+      fontSize: "1.7rem",
+      marginBottom: 20,
+    },
+  },
   h2: {
     style: {
       color: "white",

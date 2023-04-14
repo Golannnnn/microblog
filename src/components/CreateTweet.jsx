@@ -9,7 +9,7 @@ import Context from "../lib/Context";
 import { useContext } from "react";
 
 const CreateTweet = () => {
-  const { input, handleTweetSubmit, handleInputChange, isLoading } =
+  const { input, handleTweetSubmit, handleInputChange, loading } =
     useContext(Context);
   return (
     <>
@@ -23,7 +23,7 @@ const CreateTweet = () => {
         </InputGroup>
         <Button
           {...styles.button}
-          isDisabled={!input.content || input.error || isLoading}
+          isDisabled={!input.content || input.error || loading}
           onClick={handleTweetSubmit}
         >
           Tweet
@@ -32,7 +32,7 @@ const CreateTweet = () => {
           The tweet can't contain more than 140 chars.
         </Badge>
       </FormControl>
-      {isLoading && (
+      {loading && (
         <Spinner
           margin={4}
           thickness="5px"

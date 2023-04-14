@@ -1,79 +1,63 @@
-import { useState } from "react";
-import ChakraContainer from "./components/ChakraContainer";
-import { useGetAllTweets, usePostTweet } from "./lib/react-query";
+import { useState, useEffect } from "react";
+import { nanoid } from "nanoid";
 import Context from "./lib/Context";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { auth } from "./lib/firebase";
+import useTweetInput from "./lib/useTweetInput";
+import { getAllTweets, postTweet } from "./lib/tweetService";
+import ChakraContainer from "./components/ChakraContainer";
 import Navbar from "./components/Navbar";
-import Home from "./components/Home";
-import Profile from "./components/Profile";
-import { useToast } from "@chakra-ui/react";
+import RoutesTree from "./components/RoutesTree";
 
 const App = () => {
+  const [loading, setLoading] = useState(false);
+  const [tweets, setTweets] = useState([]);
   const [userName, setUserName] = useState("");
-  const [input, setInput] = useState({
-    userName: "",
-    content: "",
-    error: false,
-  });
+  const [user, setUser] = useState(localStorage.getItem("signedin"));
+  const { input, handleInputChange, handleUserNameSubmit, resetInput } =
+    useTweetInput();
 
-  const { tweets, isLoading, isError, error } = useGetAllTweets();
-  const { isCreating, isCreated, isCreateError, createError, createTweet } =
-    usePostTweet();
+  useEffect(() => {
+    const fetchTweets = async () => {
+      setLoading(true);
+      const data = await getAllTweets();
+      const tweetObj = data.map((tweet) => {
+        return {
+          ...tweet,
+          date: tweet.date.toDate(),
+        };
+      });
+      setTweets(tweetObj);
+      setLoading(false);
+    };
 
-  const toast = useToast();
+    user && fetchTweets();
+  }, [user]);
 
-  const displayToast = () => {
-    return toast({
-      position: "top",
-      description: "Changed username successfully!",
-      status: "success",
-      duration: 1500,
-      isClosable: true,
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        setUser(user);
+        localStorage.setItem("signedin", "true");
+      } else {
+        setUser(null);
+        localStorage.removeItem("signedin");
+      }
     });
-  };
+    return () => unsubscribe();
+  }, []);
 
   const handleUserNameChange = (e) => {
     setUserName(e.target.value);
   };
 
-  const handleUserNameSubmit = (e) => {
-    e.preventDefault();
-    setInput((prev) => {
-      return {
-        ...prev,
-        userName: e.target[0].value,
-      };
-    });
-    displayToast();
-  };
-
-  const handleInputChange = (e) => {
-    setInput((prev) => {
-      return {
-        ...prev,
-        [e.target.name]: e.target.value,
-        error: e.target.name === "content" && e.target.value.length > 140,
-      };
-    });
-  };
-
-  const resetInput = () => {
-    setInput((prev) => {
-      return {
-        ...prev,
-        content: "",
-        error: false,
-      };
-    });
-  };
-
-  const addTweet = () => {
+  const addTweet = async () => {
     const newTweet = {
       date: new Date(),
-      userName: input.userName ? input.userName : "Anonymous",
+      userName: input.userName || "Anonymous",
       content: input.content,
+      id: nanoid(),
     };
-    createTweet(newTweet);
+    await postTweet(newTweet);
   };
 
   const handleTweetSubmit = () => {
@@ -82,42 +66,24 @@ const App = () => {
     resetInput();
   };
 
+  const contextValues = {
+    user,
+    loading,
+    input,
+    handleTweetSubmit,
+    handleInputChange,
+    tweets,
+    userName,
+    handleUserNameChange,
+    handleUserNameSubmit,
+  };
+
   return (
     <ChakraContainer>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Navbar />}>
-            <Route
-              index
-              element={
-                <Context.Provider
-                  value={{
-                    isLoading,
-                    isError,
-                    input,
-                    handleTweetSubmit,
-                    handleInputChange,
-                    tweets,
-                  }}
-                >
-                  <Home />
-                </Context.Provider>
-              }
-            />
-            <Route
-              path="profile"
-              element={
-                <Profile
-                  userName={userName}
-                  handleUserNameChange={handleUserNameChange}
-                  handleUserNameSubmit={handleUserNameSubmit}
-                  input={input}
-                />
-              }
-            />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+      <Navbar user={user} />
+      <Context.Provider value={contextValues}>
+        <RoutesTree />
+      </Context.Provider>
     </ChakraContainer>
   );
 };

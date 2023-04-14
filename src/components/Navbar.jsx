@@ -1,33 +1,56 @@
 import { NavLink, Outlet } from "react-router-dom";
 import styles from "./NavbarStyles";
 import { Box } from "@chakra-ui/react";
+import AuthDetails from "./AuthDetails";
 
-const Navbar = () => {
+const Navbar = ({ user }) => {
   return (
     <>
       <Box {...styles.Box}>
         <nav>
           <ul {...styles.ul}>
-            <NavLink
-              to="/"
-              style={({ isActive, isPending }) => {
-                return {
-                  color: isActive ? "white" : "#6C757D",
-                  marginLeft: "20px",
-                  marginRight: "40px",
-                };
-              }}
-            >
-              Home
-            </NavLink>
-            <NavLink
-              to="/profile"
-              style={({ isActive }) =>
-                isActive ? styles.active : styles.pending
-              }
-            >
-              Profile
-            </NavLink>
+            <span>
+              <NavLink
+                to="/"
+                style={({ isActive }) =>
+                  isActive ? styles.active : styles.pending
+                }
+              >
+                Home
+              </NavLink>
+              <NavLink
+                to="/profile"
+                style={({ isActive }) =>
+                  isActive ? styles.active : styles.pending
+                }
+              >
+                Profile
+              </NavLink>
+            </span>
+            <span>
+              {user ? (
+                <AuthDetails />
+              ) : (
+                <>
+                  <NavLink
+                    to="/signup"
+                    style={({ isActive }) =>
+                      isActive ? styles.active : styles.pending
+                    }
+                  >
+                    Sign up
+                  </NavLink>
+                  <NavLink
+                    to="/signin"
+                    style={({ isActive }) =>
+                      isActive ? styles.active : styles.pending
+                    }
+                  >
+                    Sign in
+                  </NavLink>
+                </>
+              )}
+            </span>
           </ul>
         </nav>
       </Box>

@@ -18,6 +18,8 @@ const styles = {
     style: {
       listStyle: "none",
       display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
     },
   },
   li: {
@@ -28,9 +30,13 @@ const styles = {
   },
   active: {
     color: "#fff",
+    marginLeft: "20px",
+    marginRight: "20px",
   },
   pending: {
     color: "#6C757D",
+    marginLeft: "20px",
+    marginRight: "20px",
   },
 };
 
