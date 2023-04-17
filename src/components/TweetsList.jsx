@@ -13,13 +13,20 @@ const TweetsList = () => {
   }, [lastKey]);
 
   const handleScroll = () => {
-    const offsetHeight = document.documentElement.offsetHeight,
-      innerHeight = window.innerHeight,
-      scrollTop =
-        window.pageYOffset ||
-        document.documentElement.scrollTop ||
-        document.body.scrollTop ||
-        0;
+    const offsetHeight = Math.max(
+      document.body.scrollHeight,
+      document.documentElement.scrollHeight,
+      document.body.offsetHeight,
+      document.documentElement.offsetHeight,
+      document.body.clientHeight,
+      document.documentElement.clientHeight
+    );
+    const innerHeight = window.innerHeight;
+    const scrollTop =
+      window.pageYOffset ||
+      document.documentElement.scrollTop ||
+      document.body.scrollTop ||
+      0;
     if (offsetHeight - innerHeight - scrollTop < 1 && lastKey) {
       handleBatches(lastKey);
     }
@@ -27,16 +34,21 @@ const TweetsList = () => {
 
   const results =
     currentUser &&
-    tweets.map((tweet) => {
-      return (
-        <Tweet
-          key={tweet.id}
-          date={tweet.date}
-          content={tweet.content}
-          userUID={tweet.userUID}
-        />
-      );
-    });
+    tweets
+      .filter(
+        (tweet, index, self) =>
+          index === self.findIndex((t) => t.id === tweet.id)
+      )
+      .map((tweet) => {
+        return (
+          <Tweet
+            key={tweet.id}
+            date={tweet.date}
+            content={tweet.content}
+            userUID={tweet.userUID}
+          />
+        );
+      });
 
   return (
     <>

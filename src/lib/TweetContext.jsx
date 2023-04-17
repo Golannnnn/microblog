@@ -50,56 +50,34 @@ export const TweetProvider = ({ children }) => {
     return [newTweet, ...prev].sort((a, b) => b.date - a.date);
   };
 
-  // const getFirstBatch = async () => {
-  //   if (!tweets || tweets.length === 0) return;
-  //   try {
-  //     const q = query(
-  //       collection(db, "tweets"),
-  //       orderBy("date", "desc"),
-  //       limit(10)
-  //     );
-  //     const querySnapshot = await getDocs(q);
-
-  //     let tweets = [];
-  //     let lastKey;
-  //     querySnapshot.forEach((doc) => {
-  //       tweets.push({
-  //         ...doc.data(),
-  //         date: doc.data().date.toDate(),
-  //         id: doc.id,
-  //       });
-  //       lastKey = doc.data().date;
-  //     });
-  //     return { tweets, lastKey };
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // };
-
   const getNextBatch = async (key) => {
-    try {
-      const q = query(
-        collection(db, "tweets"),
-        orderBy("date", "desc"),
-        startAfter(key),
-        limit(10)
-      );
-      const querySnapshot = await getDocs(q);
-      let tweets = [];
-      let lastKey;
-      querySnapshot.forEach((doc) => {
-        // check if tweet already exists
-        if (tweets.some((tweet) => tweet.id === doc.id)) return;
-        tweets.push({
-          ...doc.data(),
-          date: doc.data().date.toDate(),
-          id: doc.id,
+    if (key && currentUser && !loadingTweets) {
+      try {
+        const q = query(
+          collection(db, "tweets"),
+          orderBy("date", "desc"),
+          startAfter(key),
+          limit(10)
+        );
+        const querySnapshot = await getDocs(q);
+        let tweets = [];
+        let lastKey;
+        querySnapshot.forEach((doc) => {
+          if (tweets.some((tweet) => tweet.id === doc.id)) {
+            return;
+          } else {
+            tweets.push({
+              ...doc.data(),
+              date: doc.data().date.toDate(),
+              id: doc.id,
+            });
+            lastKey = doc.data().date;
+          }
         });
-        lastKey = doc.data().date;
-      });
-      return { tweets, lastKey };
-    } catch (err) {
-      console.error(err);
+        return { tweets, lastKey };
+      } catch (err) {
+        console.error(err);
+      }
     }
   };
 
