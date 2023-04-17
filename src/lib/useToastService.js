@@ -1,14 +1,21 @@
-import { useToast } from "@chakra-ui/react";
+import { useBreakpointValue, useToast } from "@chakra-ui/react";
 
 const useToastService = () => {
   const toast = useToast();
 
-  const displayToast = (description, status) => {
+  const position = useBreakpointValue({
+    base: "top",
+    lg: "top",
+    md: "bottom",
+    sm: "bottom",
+  });
+
+  const displayToast = (status, description) => {
     toast({
-      position: "top",
+      position: position,
       description,
       status,
-      duration: 1500,
+      duration: 2000,
       isClosable: true,
     });
   };

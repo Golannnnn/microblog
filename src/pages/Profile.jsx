@@ -1,37 +1,90 @@
-import Context from "../lib/Context";
-import { useContext } from "react";
+import { Button, FormControl, Input, InputGroup } from "@chakra-ui/react";
+import { useState } from "react";
 import styles from "./ProfileStyles";
-import { FormControl } from "@chakra-ui/react";
-import { InputGroup } from "@chakra-ui/react";
-import { Input } from "@chakra-ui/react";
-import { Button } from "@chakra-ui/react";
+import { useAuth } from "../lib/AuthContext";
+import useToastService from "../lib/useToastService";
 
 const Profile = () => {
-  const { user, userName, handleUserNameSubmit, handleUserNameChange, input } =
-    useContext(Context);
+  const [userName, setUserName] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [file, setFile] = useState(null);
+  const {
+    currentUser,
+    updateUser,
+    userName: currentUserName,
+    uploadProfileImage,
+  } = useAuth();
+  const { displayToast } = useToastService();
+
+  const handleChange = (e) => {
+    setUserName(e.target.value);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (userName === currentUserName) {
+      displayToast("error", "Username is same as previous one");
+      return;
+    }
+    if (userName.length > 20) {
+      displayToast("error", "Username is too long");
+      return;
+    }
+    setLoading(true);
+    await updateUser(userName);
+    setLoading(false);
+    displayToast("success", `Username set to ${userName}`);
+  };
+
+  const handleFileChange = (e) => {
+    if (e.target.files[0]) {
+      setFile(e.target.files[0]);
+    }
+  };
+
+  const handleFileUpload = async () => {
+    try {
+      setLoading(true);
+      await uploadProfileImage(file, currentUser);
+      displayToast("success", `Profile picture uploaded`);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+      setFile(null);
+    }
+  };
+
   return (
-    <FormControl {...styles.formControl}>
-      {user ? (
-        <>
-          <form onSubmit={handleUserNameSubmit}>
-            <h2 {...styles.h2}>Profile</h2>
-            <label {...styles.label}>User Name</label>
-            <InputGroup {...styles.inputGroup}>
-              <Input
-                {...styles.Input}
-                onChange={handleUserNameChange}
-                defaultValue={input.userName ? input.userName : ""}
-              />
-            </InputGroup>
-            <Button {...styles.Button} isDisabled={!userName}>
-              Save
-            </Button>
-          </form>
-        </>
-      ) : (
-        <h2 {...styles.logIn}>You need to be logged in</h2>
-      )}
-    </FormControl>
+    <>
+      <FormControl {...styles.formControl}>
+        <form onSubmit={handleSubmit}>
+          <h2 {...styles.h2}>Profile</h2>
+          <label {...styles.label}>Change username</label>
+          <InputGroup {...styles.inputGroup}>
+            <Input {...styles.Input} onChange={handleChange} value={userName} />
+          </InputGroup>
+          <Button {...styles.Button} isDisabled={!userName || loading}>
+            Save
+          </Button>
+        </form>
+      </FormControl>
+      <FormControl {...styles.formControl}>
+        <label {...styles.label}>Upload profile picture</label>
+        <InputGroup {...styles.inputGroup}>
+          <label {...styles.fileLabel}>
+            <input type="file" id="file" onChange={handleFileChange} />
+          </label>
+        </InputGroup>
+        <Button
+          {...styles.Button}
+          onClick={handleFileUpload}
+          isDisabled={!file || loading}
+        >
+          Upload
+        </Button>
+      </FormControl>
+    </>
   );
 };
 

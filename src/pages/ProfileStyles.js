@@ -2,7 +2,7 @@ const styles = {
   formControl: {
     sx: {
       position: "relative",
-      maxWidth: 500,
+      maxWidth: 300,
       marginBottom: 3,
     },
   },
@@ -37,16 +37,29 @@ const styles = {
   },
   Input: {
     name: "userName",
-    // pr: "1rem",
     type: "text",
     id: "name",
     placeholder: "Fill in your user name...",
-    // resize: "none",
     sx: {
       backgroundColor: "#15202B",
       padding: "25px 15px",
       marginTop: 1,
       color: "white",
+    },
+  },
+  fileLabel: {
+    htmlFor: "file",
+    style: {
+      width: "100%",
+      height: "100%",
+      border: "1px solid white",
+      borderRadius: "4px",
+      cursor: "pointer",
+      color: "white",
+      marginTop: "5px",
+      padding: "10px 10px",
+      transition:
+        "border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out",
     },
   },
   Button: {
@@ -58,18 +71,6 @@ const styles = {
       float: "right",
     },
   },
-  // badge: {
-  //   colorScheme: "red",
-  //   textTransform: "none",
-  //   sx: {
-  //     padding: "5px 10px",
-  //     borderRadius: 5,
-  //     marginBottom: 10,
-  //     position: "absolute",
-  //     bottom: -6,
-  //     left: 3,
-  //   },
-  // },
 };
 
 export default styles;

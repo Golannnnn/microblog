@@ -18,7 +18,11 @@ const styles = {
     placeholder: "What do you have in mind...",
     resize: "none",
     sx: {
-      height: 160,
+      height: {
+        sm: "190px",
+        md: "160px",
+        base: "190px",
+      },
       color: "white",
     },
   },

@@ -26,6 +26,22 @@ const styles = {
       color: "white",
     },
   },
+  iconWrapper: {
+    style: {
+      display: "flex",
+      alignItems: "flex-start",
+    },
+  },
+  icon: {
+    style: {
+      objectFit: "cover",
+      backgroundColor: "transparent",
+      width: "30px",
+      height: "30px",
+      borderRadius: "50%",
+      marginRight: 10,
+    },
+  },
 };
 
 export default styles;

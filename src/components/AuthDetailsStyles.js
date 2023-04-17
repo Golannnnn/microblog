@@ -5,11 +5,24 @@ const styles = {
       alignItems: "center",
     },
   },
-  text: {
+  icon: {
     style: {
-      fontWeight: "bold",
-      color: "white",
-      marginRight: "1rem",
+      objectFit: "cover",
+      with: "30px",
+      height: "30px",
+      borderRadius: "50%",
+      marginRight: "15px",
+      backgroundColor: "transparent",
+    },
+  },
+  Text: {
+    fontWeight: "bold",
+    color: "white",
+    mr: 3,
+    display: {
+      sm: "none",
+      md: "block",
+      base: "none",
     },
   },
 };

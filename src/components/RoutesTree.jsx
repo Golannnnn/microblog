@@ -1,19 +1,18 @@
 import { Route, Routes } from "react-router-dom";
-import { useContext } from "react";
-import Context from "../lib/Context";
+import { useAuth } from "../lib/AuthContext";
 import Home from "../pages/Home";
 import Profile from "../pages/Profile";
-import SignUp from "../pages/SignUp";
 import SignIn from "../pages/SignIn";
+import SignUp from "../pages/SignUp";
 
 const RoutesTree = () => {
-  const { user } = useContext(Context);
+  const { currentUser } = useAuth();
   return (
     <Routes>
-      <Route index element={user ? <Home /> : <SignUp />} />
-      <Route path="/profile" element={<Profile />} />
-      <Route path="/signup" element={<SignUp />} />
-      <Route path="/signin" element={<SignIn />} />
+      <Route index element={currentUser ? <Home /> : <SignUp />} />
+      <Route path="/profile" element={currentUser ? <Profile /> : <SignUp />} />
+      <Route path="/signup" element={currentUser ? <Home /> : <SignUp />} />
+      <Route path="/signin" element={currentUser ? <Home /> : <SignIn />} />
     </Routes>
   );
 };

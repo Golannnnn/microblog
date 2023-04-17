@@ -10,33 +10,15 @@ const styles = {
       backgroundColor: "#343A40",
       padding: "15px 25px",
       borderRadius: 5,
-      margin: "0px 0px 40px 0px",
+      mb: 5,
       wordBreak: "break-word",
-    },
-  },
-  ul: {
-    style: {
-      listStyle: "none",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "space-between",
-    },
-  },
-  li: {
-    sx: {
-      marginLeft: "20px",
-      marginRight: "40px",
     },
   },
   active: {
     color: "#fff",
-    marginLeft: "20px",
-    marginRight: "20px",
   },
   pending: {
     color: "#6C757D",
-    marginLeft: "20px",
-    marginRight: "20px",
   },
 };
 

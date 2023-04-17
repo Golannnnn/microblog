@@ -1,16 +1,39 @@
+import {
+  Badge,
+  Button,
+  FormControl,
+  InputGroup,
+  Spinner,
+  Textarea,
+  useBreakpointValue,
+} from "@chakra-ui/react";
+import { nanoid } from "nanoid";
+import { useInput } from "../lib/InputContext";
+import { useTweet } from "../lib/TweetContext";
 import styles from "./CreateTweetStyles";
-import { FormControl } from "@chakra-ui/react";
-import { InputGroup } from "@chakra-ui/react";
-import { Textarea } from "@chakra-ui/react";
-import { Button } from "@chakra-ui/react";
-import { Badge } from "@chakra-ui/react";
-import { Spinner } from "@chakra-ui/react";
-import Context from "../lib/Context";
-import { useContext } from "react";
 
 const CreateTweet = () => {
-  const { input, handleTweetSubmit, handleInputChange, loading } =
-    useContext(Context);
+  const { loadingTweets, currentUser, postTweet } = useTweet();
+  const { input, handleInputChange, resetInput } = useInput();
+
+  const addTweet = async () => {
+    const newTweet = {
+      date: new Date(),
+      content: input.content,
+      userUID: currentUser.uid,
+      id: nanoid(),
+    };
+    await postTweet(newTweet);
+  };
+
+  const handleTweetSubmit = () => {
+    if (!input.content || input.error) return;
+    addTweet();
+    resetInput();
+  };
+
+  const mobile = useBreakpointValue({ sm: true, md: false, base: true });
+
   return (
     <>
       <FormControl {...styles.formControl}>
@@ -23,16 +46,18 @@ const CreateTweet = () => {
         </InputGroup>
         <Button
           {...styles.button}
-          isDisabled={!input.content || input.error || loading}
+          isDisabled={!input.content || input.error || loadingTweets}
           onClick={handleTweetSubmit}
         >
           Tweet
         </Button>
         <Badge display={input.error ? "block" : "none"} {...styles.badge}>
-          The tweet can't contain more than 140 chars.
+          {mobile
+            ? "Can't be more than 140 chars."
+            : "The tweet can't contain more than 140 chars."}
         </Badge>
       </FormControl>
-      {loading && (
+      {loadingTweets && (
         <Spinner
           margin={4}
           thickness="5px"

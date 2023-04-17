@@ -1,6 +1,4 @@
-import { extendTheme } from "@chakra-ui/react";
-import { ChakraProvider } from "@chakra-ui/react";
-import { Center } from "@chakra-ui/react";
+import { Center, ChakraProvider, extendTheme } from "@chakra-ui/react";
 
 const breakpoints = {
   sm: "320px",
@@ -19,8 +17,16 @@ const ChakraContainer = ({ children }) => {
         sx={{
           display: "flex",
           flexDirection: "column",
-          marginLeft: 5,
-          marginRight: 5,
+          marginLeft: {
+            sm: 3,
+            md: 5,
+            base: 3,
+          },
+          marginRight: {
+            sm: 3,
+            md: 5,
+            base: 3,
+          },
         }}
       >
         {children}

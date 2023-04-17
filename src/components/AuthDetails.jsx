@@ -1,16 +1,30 @@
-import useAuth from "../lib/useAuth";
+import { Button, Flex, Text } from "@chakra-ui/react";
+import { useAuth } from "../lib/AuthContext";
+import { auth } from "../lib/firebase";
 import styles from "./AuthDetailsStyles";
-import { Button } from "@chakra-ui/react";
+import useToastService from "../lib/useToastService";
 
 const AuthDetails = () => {
-  const { authUser, handleSignOut } = useAuth();
+  const { signOut, userName, userImg } = useAuth();
+  const { displayToast } = useToastService();
+  const handleSignOut = () => {
+    signOut(auth)
+      .then(() => {
+        displayToast("success", "Signed out successfully");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
-    <span {...styles.span}>
-      <span {...styles.text}>{authUser?.email}</span>
+    <Flex align="center" justify="center">
+      {userImg && <img {...styles.icon} src={userImg} alt="user" />}
+      <Text {...styles.Text}>{userName}</Text>
       <Button size="sm" onClick={handleSignOut}>
         Sign out
       </Button>
-    </span>
+    </Flex>
   );
 };
 

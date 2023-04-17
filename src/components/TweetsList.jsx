@@ -1,21 +1,24 @@
+import { useAuth } from "../lib/AuthContext";
+import { useTweet } from "../lib/TweetContext";
 import Tweet from "./Tweet";
-import Context from "../lib/Context";
-import { useContext } from "react";
 
 const TweetsList = () => {
-  const { user, tweets } = useContext(Context);
+  const { currentUser } = useAuth();
+  const { tweets, loadingTweets } = useTweet();
   const results =
-    user &&
-    tweets.map((tweet) => (
-      <Tweet
-        key={tweet.id}
-        userName={tweet.userName}
-        date={tweet.date}
-        content={tweet.content}
-      />
-    ));
+    currentUser &&
+    tweets.map((tweet) => {
+      return (
+        <Tweet
+          key={tweet.id}
+          date={tweet.date}
+          content={tweet.content}
+          userUID={tweet.userUID}
+        />
+      );
+    });
 
-  return <>{results}</>;
+  return <>{!loadingTweets && results}</>;
 };
 
 export default TweetsList;
