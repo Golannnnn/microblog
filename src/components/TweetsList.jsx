@@ -3,17 +3,31 @@ import { useAuth } from "../lib/AuthContext";
 import { useTweet } from "../lib/TweetContext";
 import Tweet from "./Tweet";
 import { Spinner, Checkbox, Box } from "@chakra-ui/react";
+import User from "./User";
+import { nanoid } from "nanoid";
 
 const TweetsList = () => {
   const [checked, setChecked] = useState(false);
   const { currentUser } = useAuth();
-  const { tweets, loadingTweets, handleBatches, lastKey, loadingMoreTweets } =
-    useTweet();
+  const {
+    tweets,
+    loadingTweets,
+    handleBatches,
+    lastKey,
+    loadingMoreTweets,
+    filteredTweets,
+    noTweets,
+    tweetsOrUsers,
+    filteredUsers,
+    allUsers,
+  } = useTweet();
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastKey]);
+
+  console.log(tweetsOrUsers, filteredUsers);
 
   const handleScroll = () => {
     const offsetHeight = Math.max(
@@ -35,9 +49,16 @@ const TweetsList = () => {
     }
   };
 
-  const NoDuplicateTweets = tweets.filter(
-    (tweet, index, self) => index === self.findIndex((t) => t.id === tweet.id)
-  );
+  const NoDuplicateTweets =
+    noTweets || filteredTweets.length > 0
+      ? filteredTweets.filter(
+          (tweet, index, self) =>
+            index === self.findIndex((t) => t.id === tweet.id)
+        )
+      : tweets.filter(
+          (tweet, index, self) =>
+            index === self.findIndex((t) => t.id === tweet.id)
+        );
 
   let results;
 
@@ -77,6 +98,29 @@ const TweetsList = () => {
     }
   };
 
+  const userResults =
+    noTweets || filteredUsers.length > 0
+      ? filteredUsers.map((user) => {
+          return (
+            <User
+              key={nanoid()}
+              name={user.name}
+              photoUrl={user.photoUrl}
+              checked={checked}
+            />
+          );
+        })
+      : allUsers.map((user) => {
+          return (
+            <User
+              key={nanoid()}
+              name={user.name}
+              photoUrl={user.photoUrl}
+              checked={checked}
+            />
+          );
+        });
+
   return (
     <>
       {!loadingTweets && (
@@ -88,21 +132,24 @@ const TweetsList = () => {
               md: "500px",
             }}
           >
-            <Checkbox
-              onChange={handleCheckboxChange}
-              sx={{
-                color: "white",
-                fontWeight: "bold",
-                backgroundColor: "blue.500",
-                borderRadius: "10px",
-                padding: "10px",
-                margin: "5px 0 5px 0",
-              }}
-            >
-              {checked ? "Show all tweets" : "Show only your tweets"}
-            </Checkbox>
+            {tweetsOrUsers === "tweets" && (
+              <Checkbox
+                onChange={handleCheckboxChange}
+                size="sm"
+                sx={{
+                  color: "white",
+                  fontWeight: "bold",
+                  backgroundColor: "blue.500",
+                  borderRadius: "10px",
+                  padding: "10px",
+                  margin: "5px 0 5px 0",
+                }}
+              >
+                {checked ? "Show all tweets" : "Show only your tweets"}
+              </Checkbox>
+            )}
           </Box>
-          {results}
+          {tweetsOrUsers === "tweets" ? results : userResults}
           {loadingMoreTweets && (
             <Spinner
               margin={4}

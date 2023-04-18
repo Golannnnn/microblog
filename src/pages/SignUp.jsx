@@ -9,7 +9,7 @@ const SignUp = () => {
       handleCreateUser={createUser}
       handleSigning={signUpWithEmail}
       SuccessText="Signed up successfully"
-      headerText="Create an account"
+      headerText="Create an account to see tweets"
       submitBtnText="Sign up"
       signInGoogleBtnText="Sign up with Google"
     />

@@ -20,10 +20,15 @@ export const useTweet = () => {
 
 export const TweetProvider = ({ children }) => {
   const [tweets, setTweets] = useState([]);
+  const [filteredTweets, setFilteredTweets] = useState([]);
   const [lastKey, setLastKey] = useState(null);
   const [loadingTweets, setLoadingTweets] = useState(false);
   const [loadingMoreTweets, setLoadingMoreTweets] = useState(false);
+  const [noTweets, setNoTweets] = useState(false);
   const { currentUser } = useAuth();
+  const [tweetsOrUsers, setTweetsOrUsers] = useState("tweets");
+  const [allUsers, setAllUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
 
   const getAllTweets = async () => {
     const q = query(collection(db, "tweets"), orderBy("date", "desc"));
@@ -101,6 +106,58 @@ export const TweetProvider = ({ children }) => {
     }
   };
 
+  const handleSearchChange = (e) => {
+    if (e.target.value) {
+      const filteredTweets = tweets.filter((tweet) =>
+        tweet.content.toLowerCase().includes(e.target.value.toLowerCase())
+      );
+      filteredTweets.length === 0 ? setNoTweets(true) : setNoTweets(false);
+      setFilteredTweets(filteredTweets);
+    } else {
+      setNoTweets(false);
+      setFilteredTweets([]);
+    }
+  };
+
+  const handleTweetsOrUsers = (e) => {
+    setTweetsOrUsers(e.target.value);
+  };
+
+  const handleSearch = (e) => {
+    if (tweetsOrUsers === "tweets") {
+      handleSearchChange(e);
+    } else {
+      handleUserSearch(e);
+    }
+  };
+
+  const handleUserSearch = (e) => {
+    if (e.target.value) {
+      const array = allUsers.filter((user) =>
+        user.name.toLowerCase().includes(e.target.value.toLowerCase())
+      );
+      array.length === 0 ? setNoTweets(true) : setNoTweets(false);
+      setFilteredUsers(array);
+    } else {
+      setNoTweets(false);
+      setFilteredUsers([]);
+    }
+  };
+
+  const getAllUsers = async () => {
+    const q = query(collection(db, "users"));
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map((doc) => doc.data());
+  };
+
+  useEffect(() => {
+    if (currentUser) {
+      getAllUsers().then((data) => {
+        setAllUsers(data);
+      });
+    }
+  }, [currentUser]);
+
   useEffect(() => {
     if (!currentUser || loadingTweets) return;
     setLoadingTweets(true);
@@ -129,6 +186,15 @@ export const TweetProvider = ({ children }) => {
     handleBatches,
     lastKey,
     loadingMoreTweets,
+    // handleSearchTweets,
+    filteredTweets,
+    handleSearchChange,
+    noTweets,
+    tweetsOrUsers,
+    handleTweetsOrUsers,
+    handleSearch,
+    filteredUsers,
+    allUsers,
   };
 
   return (

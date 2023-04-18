@@ -21,7 +21,8 @@ const styles = {
     mr: 3,
     display: {
       sm: "none",
-      md: "block",
+      md: "none",
+      lg: "block",
       base: "none",
     },
   },

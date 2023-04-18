@@ -8,7 +8,7 @@ const SignIn = () => {
     <AuthForm
       handleSigning={signInWithEmail}
       SuccessText="Signed in successfully"
-      headerText="Log in to your account"
+      headerText="Log in to see tweets"
       submitBtnText="Sign in"
       signInGoogleBtnText="Sign in with Google"
     />

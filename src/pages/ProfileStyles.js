@@ -71,6 +71,22 @@ const styles = {
       float: "right",
     },
   },
+  icon: {
+    style: {
+      objectFit: "cover",
+      with: "60px",
+      height: "60px",
+      borderRadius: "50%",
+      marginRight: "15px",
+      backgroundColor: "transparent",
+    },
+  },
+  Text: {
+    fontWeight: "bold",
+    color: "white",
+    fontSize: 25,
+    mr: 3,
+  },
 };
 
 export default styles;

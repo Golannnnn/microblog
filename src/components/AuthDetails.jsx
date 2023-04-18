@@ -18,10 +18,20 @@ const AuthDetails = () => {
   };
 
   return (
-    <Flex align="center" justify="center">
+    <Flex
+      align="center"
+      justify="center"
+      wordBreak="keep-all"
+      ml={3}
+      mt={{
+        sm: 3,
+        md: 0,
+        base: 3,
+      }}
+    >
       {userImg && <img {...styles.icon} src={userImg} alt="user" />}
       <Text {...styles.Text}>{userName}</Text>
-      <Button size="sm" onClick={handleSignOut}>
+      <Button size="sm" onClick={handleSignOut} w={120}>
         Sign out
       </Button>
     </Flex>

@@ -1,4 +1,11 @@
-import { Button, FormControl, Input, InputGroup } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  FormControl,
+  Input,
+  InputGroup,
+  Text,
+} from "@chakra-ui/react";
 import { useState } from "react";
 import styles from "./ProfileStyles";
 import { useAuth } from "../lib/AuthContext";
@@ -13,6 +20,7 @@ const Profile = () => {
     updateUser,
     userName: currentUserName,
     uploadProfileImage,
+    userImg,
   } = useAuth();
   const { displayToast } = useToastService();
 
@@ -59,7 +67,10 @@ const Profile = () => {
     <>
       <FormControl {...styles.formControl}>
         <form onSubmit={handleSubmit}>
-          <h2 {...styles.h2}>Profile</h2>
+          <Flex align="center" mb={5} mt={2}>
+            {userImg && <img {...styles.icon} src={userImg} alt="user" />}
+            <Text {...styles.Text}>{currentUserName}</Text>
+          </Flex>
           <label {...styles.label}>Change username</label>
           <InputGroup {...styles.inputGroup}>
             <Input {...styles.Input} onChange={handleChange} value={userName} />

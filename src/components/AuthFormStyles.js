@@ -2,8 +2,18 @@ const styles = {
   formControl: {
     sx: {
       position: "relative",
-      maxWidth: 300,
+      maxWidth: 320,
       marginBottom: 3,
+    },
+  },
+  h1: {
+    style: {
+      textAlign: "center",
+      color: "white",
+      fontSize: "2rem",
+      marginBottom: 15,
+      borderRadius: 5,
+      fontWeight: "bold",
     },
   },
   h2: {
@@ -20,7 +30,7 @@ const styles = {
     placeholder: "Fill in your email...",
     sx: {
       backgroundColor: "#15202B",
-      padding: "20px 10px",
+      padding: "25px 10px",
       marginTop: 1,
       color: "white",
       borderRadius: 5,
@@ -34,7 +44,7 @@ const styles = {
     placeholder: "Fill in your password...",
     sx: {
       backgroundColor: "#15202B",
-      padding: "20px 10px",
+      padding: "25px 10px",
       marginTop: 1,
       color: "white",
       borderRadius: 5,
@@ -43,7 +53,7 @@ const styles = {
   },
   Divider: {
     sx: {
-      width: 300,
+      width: 320,
       marginTop: 2,
       marginBottom: 5,
     },
@@ -53,9 +63,9 @@ const styles = {
     size: "sm",
     colorScheme: "blue",
     sx: {
-      width: 300,
+      width: 320,
       borderRadius: 5,
-      float: "right",
+      padding: "25px 0px",
     },
   },
 };

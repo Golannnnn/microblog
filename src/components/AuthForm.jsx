@@ -60,7 +60,8 @@ const SignIn = ({
   return (
     <>
       <FormControl {...styles.formControl}>
-        <h2 {...styles.h2}>{headerText}</h2>
+        <h1 {...styles.h1}>{headerText}</h1>
+        {/* <h2 {...styles.h2}>{headerText}</h2> */}
         <form onSubmit={handleSubmit}>
           <Input {...styles.email} onChange={handleEmailChange} value={email} />
           <Input

@@ -2,6 +2,7 @@ import { Box, Flex, Text } from "@chakra-ui/react";
 import { NavLink, Outlet } from "react-router-dom";
 import { useAuth } from "../lib/AuthContext";
 import AuthDetails from "./AuthDetails";
+import SearchBar from "./SearchBar";
 import styles from "./NavbarStyles";
 
 const Navbar = () => {
@@ -9,7 +10,19 @@ const Navbar = () => {
   return (
     <>
       <Box {...styles.Box}>
-        <Flex align="center" justify="space-between">
+        <Flex
+          align="center"
+          justify={{
+            sm: "center",
+            md: "space-between",
+            base: "center",
+          }}
+          flexWrap={{
+            sm: "wrap",
+            md: "nowrap",
+            base: "wrap",
+          }}
+        >
           <Flex justify="center" align="center">
             <NavLink
               to="/"
@@ -23,22 +36,43 @@ const Navbar = () => {
                   md: 10,
                   base: 5,
                 }}
+                wordBreak="keep-all"
               >
                 Home
               </Text>
             </NavLink>
-            <NavLink
-              to="/profile"
-              style={({ isActive }) =>
-                isActive ? styles.active : styles.pending
-              }
-            >
-              <Text mr={1}>Profile</Text>
-            </NavLink>
+            {currentUser && (
+              <NavLink
+                to="/profile"
+                style={({ isActive }) =>
+                  isActive ? styles.active : styles.pending
+                }
+              >
+                <Text mr={2} wordBreak="keep-all">
+                  Profile
+                </Text>
+              </NavLink>
+            )}
           </Flex>
           <Flex align="center" justify="center">
             {currentUser ? (
-              <AuthDetails />
+              <Flex
+                justify="center"
+                align="center"
+                flexWrap={{
+                  sm: "wrap",
+                  md: "nowrap",
+                  base: "wrap",
+                }}
+                m={{
+                  sm: 3,
+                  md: 0,
+                  base: 3,
+                }}
+              >
+                <SearchBar />
+                <AuthDetails />
+              </Flex>
             ) : (
               <>
                 <NavLink
