@@ -52,29 +52,42 @@ const Navbar = () => {
               </Text>
             </NavLink>
             {currentUser && (
-              <NavLink
-                to="/profile"
-                style={({ isActive }) =>
-                  isActive ? styles.active : styles.pending
-                }
-              >
-                <Text
-                  mr={2}
-                  fontSize={{
-                    sm: "20px",
-                    md: "16px",
-                    base: "20px",
-                  }}
-                  fontWeight={{
-                    sm: "bold",
-                    md: "normal",
-                    base: "bold",
-                  }}
-                  wordBreak="keep-all"
+              <Flex justify="center" align="center">
+                <NavLink
+                  to="/profile"
+                  style={({ isActive }) =>
+                    isActive ? styles.active : styles.pending
+                  }
                 >
-                  Profile
-                </Text>
-              </NavLink>
+                  <Text
+                    mr={2}
+                    fontSize={{
+                      sm: "20px",
+                      md: "16px",
+                      base: "20px",
+                    }}
+                    fontWeight={{
+                      sm: "bold",
+                      md: "normal",
+                      base: "bold",
+                    }}
+                    wordBreak="keep-all"
+                  >
+                    Profile
+                  </Text>
+                </NavLink>
+                <Flex
+                  align="center"
+                  justify="center"
+                  display={{
+                    sm: "flex",
+                    md: "none",
+                    base: "flex",
+                  }}
+                >
+                  <AuthDetails />
+                </Flex>
+              </Flex>
             )}
           </Flex>
           <Flex align="center" justify="center">
@@ -94,7 +107,15 @@ const Navbar = () => {
                 }}
               >
                 <SearchBar />
-                <AuthDetails />
+                <Flex
+                  display={{
+                    sm: "none",
+                    md: "flex",
+                    base: "none",
+                  }}
+                >
+                  <AuthDetails />
+                </Flex>
               </Flex>
             ) : (
               <>

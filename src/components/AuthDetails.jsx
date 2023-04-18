@@ -18,17 +18,7 @@ const AuthDetails = () => {
   };
 
   return (
-    <Flex
-      align="center"
-      justify="center"
-      wordBreak="keep-all"
-      ml={3}
-      mt={{
-        sm: 5,
-        md: 0,
-        base: 5,
-      }}
-    >
+    <Flex align="center" justify="center" wordBreak="keep-all" ml={3}>
       <Flex
         display={{
           sm: "none",
