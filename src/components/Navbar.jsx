@@ -104,7 +104,22 @@ const Navbar = () => {
                     isActive ? styles.active : styles.pending
                   }
                 >
-                  <Text mr={5}>Sign up</Text>
+                  <Text
+                    mr={5}
+                    fontSize={{
+                      sm: "20px",
+                      md: "16px",
+                      base: "20px",
+                    }}
+                    fontWeight={{
+                      sm: "bold",
+                      md: "normal",
+                      base: "bold",
+                    }}
+                    wordBreak="keep-all"
+                  >
+                    Sign up
+                  </Text>
                 </NavLink>
                 <NavLink
                   to="/signin"
@@ -112,7 +127,21 @@ const Navbar = () => {
                     isActive ? styles.active : styles.pending
                   }
                 >
-                  <Text>Sign in</Text>
+                  <Text
+                    fontSize={{
+                      sm: "20px",
+                      md: "16px",
+                      base: "20px",
+                    }}
+                    fontWeight={{
+                      sm: "bold",
+                      md: "normal",
+                      base: "bold",
+                    }}
+                    wordBreak="keep-all"
+                  >
+                    Sign in
+                  </Text>
                 </NavLink>
               </>
             )}
