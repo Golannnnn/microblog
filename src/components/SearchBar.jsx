@@ -24,8 +24,11 @@ const SearchBar = () => {
     <Flex wrap="nowrap">
       <Select
         size="md"
-        maxWidth={110}
-        // width={270}
+        w={{
+          sm: "120px",
+          md: "50%",
+          base: "120px",
+        }}
         mr={2}
         sx={{
           background: "white",

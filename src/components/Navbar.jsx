@@ -36,6 +36,16 @@ const Navbar = () => {
                   md: 10,
                   base: 5,
                 }}
+                fontSize={{
+                  sm: "20px",
+                  md: "16px",
+                  base: "20px",
+                }}
+                fontWeight={{
+                  sm: "bold",
+                  md: "normal",
+                  base: "bold",
+                }}
                 wordBreak="keep-all"
               >
                 Home
@@ -48,7 +58,20 @@ const Navbar = () => {
                   isActive ? styles.active : styles.pending
                 }
               >
-                <Text mr={2} wordBreak="keep-all">
+                <Text
+                  mr={2}
+                  fontSize={{
+                    sm: "20px",
+                    md: "16px",
+                    base: "20px",
+                  }}
+                  fontWeight={{
+                    sm: "bold",
+                    md: "normal",
+                    base: "bold",
+                  }}
+                  wordBreak="keep-all"
+                >
                   Profile
                 </Text>
               </NavLink>
@@ -64,10 +87,10 @@ const Navbar = () => {
                   md: "nowrap",
                   base: "wrap",
                 }}
-                m={{
-                  sm: 3,
+                mt={{
+                  sm: 4,
                   md: 0,
-                  base: 3,
+                  base: 4,
                 }}
               >
                 <SearchBar />

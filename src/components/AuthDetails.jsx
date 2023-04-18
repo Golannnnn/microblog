@@ -24,14 +24,22 @@ const AuthDetails = () => {
       wordBreak="keep-all"
       ml={3}
       mt={{
-        sm: 3,
+        sm: 5,
         md: 0,
-        base: 3,
+        base: 5,
       }}
     >
-      {userImg && <img {...styles.icon} src={userImg} alt="user" />}
+      <Flex
+        display={{
+          sm: "none",
+          md: "flex",
+          base: "none",
+        }}
+      >
+        {userImg && <img {...styles.icon} src={userImg} alt="user" />}
+      </Flex>
       <Text {...styles.Text}>{userName}</Text>
-      <Button size="sm" onClick={handleSignOut} w={120}>
+      <Button bg="tomato" size="md" onClick={handleSignOut} w={100}>
         Sign out
       </Button>
     </Flex>
