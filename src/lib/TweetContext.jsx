@@ -22,7 +22,7 @@ export const TweetProvider = ({ children }) => {
   const [tweets, setTweets] = useState([]);
   const [lastKey, setLastKey] = useState(null);
   const [loadingTweets, setLoadingTweets] = useState(false);
-  const [initialLoad, setInitialLoad] = useState(true);
+  const [loadingMoreTweets, setLoadingMoreTweets] = useState(false);
   const { currentUser } = useAuth();
 
   const getAllTweets = async () => {
@@ -83,10 +83,9 @@ export const TweetProvider = ({ children }) => {
 
   const handleBatches = (key) => {
     if (key && currentUser && !loadingTweets) {
+      setLoadingMoreTweets(true);
       getNextBatch(key)
         .then((data) => {
-          // check if data.tweets contains tweets already in state
-          // if so, filter them out
           const filteredTweets = data.tweets.filter(
             (tweet) => !tweets.some((t) => t.id === tweet.id)
           );
@@ -95,6 +94,9 @@ export const TweetProvider = ({ children }) => {
         })
         .catch((err) => {
           console.error(err);
+        })
+        .finally(() => {
+          setLoadingMoreTweets(false);
         });
     }
   };
@@ -126,6 +128,7 @@ export const TweetProvider = ({ children }) => {
     postTweet,
     handleBatches,
     lastKey,
+    loadingMoreTweets,
   };
 
   return (

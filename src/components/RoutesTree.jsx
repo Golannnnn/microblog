@@ -4,6 +4,7 @@ import Home from "../pages/Home";
 import Profile from "../pages/Profile";
 import SignIn from "../pages/SignIn";
 import SignUp from "../pages/SignUp";
+import NoPage from "./NoPage";
 
 const RoutesTree = () => {
   const { currentUser } = useAuth();
@@ -13,6 +14,7 @@ const RoutesTree = () => {
       <Route path="/profile" element={currentUser ? <Profile /> : <SignUp />} />
       <Route path="/signup" element={currentUser ? <Home /> : <SignUp />} />
       <Route path="/signin" element={currentUser ? <Home /> : <SignIn />} />
+      <Route path="*" element={<NoPage />} />
     </Routes>
   );
 };

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../lib/AuthContext";
 import styles from "./TweetStyles";
 
-const Tweet = ({ date, content, userUID }) => {
+const Tweet = ({ date, content, userUID, checked }) => {
   const { getUser } = useAuth();
   const [name, setName] = useState("");
   const [icon, setIcon] = useState("");
@@ -20,13 +20,30 @@ const Tweet = ({ date, content, userUID }) => {
   }, []);
 
   return (
-    <Box {...styles.Box}>
+    <Box
+      {...styles.Box}
+      style={{
+        backgroundColor: checked ? "#59626d" : "#343A40",
+      }}
+    >
       <div {...styles.div}>
         <span {...styles.iconWrapper}>
           {icon && <img {...styles.icon} src={icon} alt="user" />}
-          <span>{name}</span>
+          <span
+            style={{
+              color: checked ? "white" : "#6C757D",
+            }}
+          >
+            {name}
+          </span>
         </span>
-        <span>{formattedDate}</span>
+        <span
+          style={{
+            color: checked ? "white" : "#6C757D",
+          }}
+        >
+          {formattedDate}
+        </span>
       </div>
       <p {...styles.p}>{content}</p>
     </Box>

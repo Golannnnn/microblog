@@ -1,11 +1,14 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../lib/AuthContext";
 import { useTweet } from "../lib/TweetContext";
 import Tweet from "./Tweet";
+import { Spinner, Checkbox, Box } from "@chakra-ui/react";
 
 const TweetsList = () => {
+  const [checked, setChecked] = useState(false);
   const { currentUser } = useAuth();
-  const { tweets, loadingTweets, handleBatches, lastKey } = useTweet();
+  const { tweets, loadingTweets, handleBatches, lastKey, loadingMoreTweets } =
+    useTweet();
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
@@ -32,39 +35,84 @@ const TweetsList = () => {
     }
   };
 
-  const results =
-    currentUser &&
-    tweets
-      .filter(
-        (tweet, index, self) =>
-          index === self.findIndex((t) => t.id === tweet.id)
-      )
-      .map((tweet) => {
-        return (
-          <Tweet
-            key={tweet.id}
-            date={tweet.date}
-            content={tweet.content}
-            userUID={tweet.userUID}
-          />
-        );
-      });
+  const NoDuplicateTweets = tweets.filter(
+    (tweet, index, self) => index === self.findIndex((t) => t.id === tweet.id)
+  );
+
+  let results;
+
+  if (currentUser) {
+    results = !checked
+      ? NoDuplicateTweets.map((tweet) => {
+          return (
+            <Tweet
+              checked={checked}
+              key={tweet.id}
+              date={tweet.date}
+              content={tweet.content}
+              userUID={tweet.userUID}
+            />
+          );
+        })
+      : NoDuplicateTweets.filter(
+          (tweet) => tweet.userUID === currentUser.uid
+        ).map((tweet) => {
+          return (
+            <Tweet
+              checked={checked}
+              key={tweet.id}
+              date={tweet.date}
+              content={tweet.content}
+              userUID={tweet.userUID}
+            />
+          );
+        });
+  }
+
+  const handleCheckboxChange = (e) => {
+    if (e.target.checked) {
+      setChecked(true);
+    } else {
+      setChecked(false);
+    }
+  };
 
   return (
     <>
       {!loadingTweets && (
         <>
-          {results}
-          {/* {lastKey && (
-            <button
-              onClick={() => handleBatches(lastKey)}
-              style={{
-                backgroundColor: "white",
+          <Box
+            width={{
+              base: "100%",
+              sm: "100%",
+              md: "500px",
+            }}
+          >
+            <Checkbox
+              onChange={handleCheckboxChange}
+              sx={{
+                color: "white",
+                fontWeight: "bold",
+                backgroundColor: "blue.500",
+                borderRadius: "10px",
+                padding: "10px",
+                margin: "5px 0 5px 0",
               }}
             >
-              Load more
-            </button>
-          )} */}
+              {checked ? "Show all tweets" : "Show only your tweets"}
+            </Checkbox>
+          </Box>
+          {results}
+          {loadingMoreTweets && (
+            <Spinner
+              margin={4}
+              thickness="5px"
+              speed="0.65s"
+              emptyColor="gray.200"
+              color="blue.500"
+              size="xl"
+            />
+          )}
         </>
       )}
     </>
